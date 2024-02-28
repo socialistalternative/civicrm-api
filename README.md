@@ -8,7 +8,7 @@ JavaScript/TypeScript client for CiviCRM API v4.
 > This package is under development and not yet published to npm.
 
 ```sh
-npm install package-name-tbd
+npm install civicrm-api
 ```
 
 ## Usage
@@ -19,7 +19,7 @@ npm install package-name-tbd
 ### Create a client
 
 ```ts
-import { createClient } from 'package-name-tbd';
+import { createClient } from "civicrm-api";
 
 const client = createClient({
   baseUrl: 'https://example.com/civicrm',
