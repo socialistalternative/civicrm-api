@@ -4,9 +4,6 @@ JavaScript/TypeScript client for CiviCRM API v4.
 
 ## Installation
 
-> [!WARNING]
-> This package is under development and not yet published to npm.
-
 ```sh
 npm install civicrm-api
 ```
