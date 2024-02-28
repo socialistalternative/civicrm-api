@@ -15,9 +15,9 @@ export function createClient<E extends EntitiesConfig>(
     throw new Error("apiKey is required");
   }
 
-  const req = request.bind(config);
-
-  return mapValues(config.entities, (entity) => {
-    return new RequestBuilder(entity, req);
+  return mapValues(config.entities, (entity) => (requestInit) => {
+    return new RequestBuilder(entity, (requestParams) =>
+      request.bind(config)(requestParams, requestInit),
+    );
   });
 }

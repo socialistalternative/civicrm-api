@@ -1,3 +1,4 @@
+import { isEmpty, mapValues } from "lodash-es";
 import {
   Action,
   Entity,
@@ -10,12 +11,11 @@ import {
 export class RequestBuilder<T = any> implements PromiseLike<T> {
   private readonly entity: Entity;
   private readonly request: RequestFn<T>;
-
   private innerPromise: Promise<T>;
-
   private action: Action;
   private params?: Params;
   private index?: Index;
+  private chains: Record<string, RequestBuilder> = {};
 
   constructor(entity: string, request: RequestFn<T>) {
     this.entity = entity;
@@ -23,11 +23,55 @@ export class RequestBuilder<T = any> implements PromiseLike<T> {
   }
 
   get requestParams(): RequestParams {
-    return [this.entity, this.action, this.params, this.index];
+    const params: Params = { ...this.params };
+
+    if (!isEmpty(this.chains)) {
+      params.chain = mapValues(
+        this.chains,
+        (chainRequest: RequestBuilder) => chainRequest.requestParams,
+      );
+    }
+
+    return [this.entity, this.action, params, this.index];
   }
 
-  get(params: Params) {
+  get(params?: Params) {
     this.action = Action.get;
+    this.params = params;
+
+    return this;
+  }
+
+  create(params?: Params) {
+    this.action = Action.create;
+    this.params = params;
+
+    return this;
+  }
+
+  update(params?: Params) {
+    this.action = Action.update;
+    this.params = params;
+
+    return this;
+  }
+
+  save(params?: Params) {
+    this.action = Action.save;
+    this.params = params;
+
+    return this;
+  }
+
+  delete(params?: Params) {
+    this.action = Action.delete;
+    this.params = params;
+
+    return this;
+  }
+
+  getChecksum(params?: Params) {
+    this.action = Action.getChecksum;
     this.params = params;
 
     return this;
@@ -39,13 +83,19 @@ export class RequestBuilder<T = any> implements PromiseLike<T> {
     return this;
   }
 
+  chain(name: string, req: RequestBuilder) {
+    this.chains[name] = req;
+
+    return this;
+  }
+
   then<TResult1 = T, TResult2 = never>(
     onFulfilled?:
-      | ((value: any) => TResult1 | PromiseLike<TResult1>)
+      | ((value: T) => TResult1 | PromiseLike<TResult1>)
       | null
       | undefined,
     onRejected?:
-      | ((reason: any) => TResult2 | PromiseLike<TResult2>)
+      | ((reason: Error) => TResult2 | PromiseLike<TResult2>)
       | null
       | undefined,
   ): PromiseLike<TResult1 | TResult2> {
