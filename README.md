@@ -22,15 +22,18 @@ npm install civicrm-api
 import { createClient } from "civicrm-api";
 
 const client = createClient({
-  baseUrl: 'https://example.com/civicrm',
-  apiKey: 'your-api-key',
+  baseUrl: "https://example.com/civicrm",
+  apiKey: "your-api-key",
 });
 ```
 
 ### Make a request
 
 ```ts
-const contact = await client.contact().get({ where: { id: 1 } }).one();
+const contact = await client
+  .contact()
+  .get({ where: { id: 1 } })
+  .one();
 ```
 
 ## Development
