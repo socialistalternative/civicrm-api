@@ -1,4 +1,3 @@
-import { randomUUID } from "crypto";
 import { isEmpty } from "lodash-es";
 
 import { RequestParams } from "./types";
@@ -11,7 +10,7 @@ export async function request(
   [entity, action, params, index]: RequestParams,
   { headers, ...requestInit }: RequestInit = {},
 ) {
-  const requestId = randomUUID();
+  const requestId = crypto.randomUUID();
 
   const url = new URL(`civicrm/ajax/api4/${entity}/${action}`, this.baseUrl);
 
