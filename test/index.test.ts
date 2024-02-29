@@ -47,14 +47,14 @@ test("creates methods for specified entities", () => {
 });
 
 test("makes a request", async () => {
-  await client.contact().get();
+  await client.contact.get();
   const req = await request;
 
   expect(req.url).toBe("https://example.com/civicrm/ajax/api4/Contact/get");
 });
 
 test("sets request headers", async () => {
-  await client.contact().get();
+  await client.contact.get();
   const req = await request;
 
   expect(req.headers.get("Authorization")).toBe("Bearer mock-api-key");
@@ -65,8 +65,8 @@ test("sets request headers", async () => {
 });
 
 test("accepts request options", async () => {
-  await client
-    .contact({
+  await client.contact
+    .options({
       cache: "no-cache",
     })
     .get();
@@ -76,8 +76,8 @@ test("accepts request options", async () => {
 });
 
 test("accepts additional headers", async () => {
-  await client
-    .contact({
+  await client.contact
+    .options({
       headers: {
         "X-Correlation-Id": "mock-correlation-id",
       },
@@ -89,12 +89,34 @@ test("accepts additional headers", async () => {
   expect(req.headers.get("X-Correlation-Id")).toBe("mock-correlation-id");
 });
 
+test("accepts default request options", async () => {
+  const clientWithDefaults = createClient({
+    baseUrl: "https://example.com",
+    apiKey: "mock-api-key",
+    entities: {
+      contact: "Contact",
+    },
+    requestOptions: {
+      cache: "no-cache",
+      headers: {
+        "X-Correlation-Id": "mock-correlation-id",
+      },
+    },
+  });
+  await clientWithDefaults.contact.get();
+  const req = await request;
+
+  expect(req.cache).toBe("no-cache");
+  expect(req.headers.get("Authorization")).toBe("Bearer mock-api-key");
+  expect(req.headers.get("X-Correlation-Id")).toBe("mock-correlation-id");
+});
+
 test("parses response", () => {
-  expect(client.contact().get()).resolves.toEqual("Mock response");
+  expect(client.contact.get()).resolves.toEqual("Mock response");
 });
 
 test("accepts params", async () => {
-  await client.contact().get({
+  await client.contact.get({
     select: ["name"],
     where: [["id", "=", 1]],
   });
@@ -110,7 +132,7 @@ test("accepts params", async () => {
 });
 
 test("requests a single resource", async () => {
-  await client.contact().get().one();
+  await client.contact.get().one();
   const req = await request;
 
   const searchParams = new URL(req.url).searchParams;
@@ -119,15 +141,13 @@ test("requests a single resource", async () => {
 });
 
 test("makes chained requests", async () => {
-  await client
-    .contact()
+  await client.contact
     .get({
       where: [["id", "=", 1]],
     })
     .chain(
       "activity",
-      client
-        .activity()
+      client.activity
         .get({
           where: [["id", "=", 2]],
         })
@@ -154,24 +174,19 @@ test("makes chained requests", async () => {
 });
 
 test("makes nested chained requests", async () => {
-  await client
-    .contact()
+  await client.contact
     .get({
       where: [["id", "=", 1]],
     })
     .chain(
       "activity",
-      client
-        .activity()
+      client.activity
         .get({
           where: [["id", "=", 2]],
         })
         .chain(
           "contact",
-          client
-            .contact()
-            .get({ where: [["id", "=", 3]] })
-            .one(),
+          client.contact.get({ where: [["id", "=", 3]] }).one(),
         ),
     );
   const req = await request;
@@ -206,14 +221,14 @@ test("makes nested chained requests", async () => {
 
 describe("request methods", () => {
   test("makes a get request", async () => {
-    await client.contact().get();
+    await client.contact.get();
     const req = await request;
 
     expect(req.url).toBe("https://example.com/civicrm/ajax/api4/Contact/get");
   });
 
   test("makes a create request", async () => {
-    await client.contact().create();
+    await client.contact.create();
     const req = await request;
 
     expect(req.url).toBe(
@@ -222,7 +237,7 @@ describe("request methods", () => {
   });
 
   test("makes a update request", async () => {
-    await client.contact().update();
+    await client.contact.update();
     const req = await request;
 
     expect(req.url).toBe(
@@ -231,14 +246,14 @@ describe("request methods", () => {
   });
 
   test("makes a save request", async () => {
-    await client.contact().save();
+    await client.contact.save();
     const req = await request;
 
     expect(req.url).toBe("https://example.com/civicrm/ajax/api4/Contact/save");
   });
 
   test("makes a delete request", async () => {
-    await client.contact().delete();
+    await client.contact.delete();
     const req = await request;
 
     expect(req.url).toBe(
@@ -247,7 +262,7 @@ describe("request methods", () => {
   });
 
   test("makes a getChecksum request", async () => {
-    await client.contact().getChecksum();
+    await client.contact.getChecksum();
     const req = await request;
 
     expect(req.url).toBe(

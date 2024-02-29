@@ -1,5 +1,4 @@
-import { mapValues } from "lodash-es";
-
+import { forIn } from "lodash-es";
 import { request } from "./request";
 import { RequestBuilder } from "./request-builder";
 import { Client, ClientConfig, EntitiesConfig } from "./types";
@@ -15,9 +14,19 @@ export function createClient<E extends EntitiesConfig>(
     throw new Error("apiKey is required");
   }
 
-  return mapValues(config.entities, (entity) => (requestInit) => {
-    return new RequestBuilder(entity, (requestParams) =>
-      request.bind(config)(requestParams, requestInit),
-    );
+  const client = {} as Client<E>;
+
+  forIn(config.entities, (entity: string, key: string) => {
+    Reflect.defineProperty(client, key, {
+      get: () =>
+        new RequestBuilder(entity, (requestParams, requestOptions) =>
+          request.bind(config)(requestParams, {
+            ...config.requestOptions,
+            ...requestOptions,
+          }),
+        ),
+    });
   });
+
+  return client;
 }

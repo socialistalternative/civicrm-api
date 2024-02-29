@@ -16,6 +16,7 @@ export class RequestBuilder<T = unknown> implements PromiseLike<T> {
   private params?: Params;
   private index?: Index;
   private chains: Record<string, RequestBuilder> = {};
+  private requestOptions: RequestInit = {};
 
   constructor(entity: string, request: RequestFn<T>) {
     this.entity = entity;
@@ -83,6 +84,12 @@ export class RequestBuilder<T = unknown> implements PromiseLike<T> {
     return this;
   }
 
+  options(requestOptions: RequestInit) {
+    this.requestOptions = requestOptions;
+
+    return this;
+  }
+
   chain(label: string, requestBuilder: RequestBuilder) {
     this.chains[label] = requestBuilder;
 
@@ -104,7 +111,7 @@ export class RequestBuilder<T = unknown> implements PromiseLike<T> {
 
   getInnerPromise() {
     if (!this.innerPromise) {
-      this.innerPromise = this.request(this.requestParams);
+      this.innerPromise = this.request(this.requestParams, this.requestOptions);
     }
 
     return this.innerPromise;

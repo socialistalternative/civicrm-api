@@ -6,10 +6,11 @@ export interface ClientConfig<E extends EntitiesConfig> {
   baseUrl: string;
   apiKey: string;
   entities: E;
+  requestOptions?: RequestInit;
 }
 
 export type Client<E extends EntitiesConfig> = {
-  [K in keyof E]: (requestInit?: RequestInit) => RequestBuilder;
+  [K in keyof E]: RequestBuilder;
 };
 
 export type Entity = string;
@@ -88,4 +89,7 @@ export type Params =
 export type Index = number;
 
 export type RequestParams = [Entity, Action, Params?, Index?];
-export type RequestFn<T> = (params: RequestParams) => Promise<T>;
+export type RequestFn<T> = (
+  params: RequestParams,
+  requestOptions: RequestInit,
+) => Promise<T>;
