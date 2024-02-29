@@ -1,5 +1,6 @@
 import { DeferredPromise } from "@open-draft/deferred-promise";
-import { afterEach, beforeEach, describe, expect, test } from "vitest";
+import { noop } from "lodash-es";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
 import { createClient } from "../src";
 import { server } from "./mock-server";
@@ -268,5 +269,50 @@ describe("request methods", () => {
     expect(req.url).toBe(
       "https://example.com/civicrm/ajax/api4/Contact/getChecksum",
     );
+  });
+});
+
+describe("debug", () => {
+  const clientWithDebug = createClient({
+    debug: true,
+    baseUrl: "https://example.com",
+    apiKey: "mock-api-key",
+    entities: {
+      contact: "Contact",
+      activity: "Activity",
+    },
+  });
+
+  const consoleSpy = {
+    group: vi.spyOn(console, "group").mockImplementation(noop),
+    groupEnd: vi.spyOn(console, "groupEnd").mockImplementation(noop),
+    error: vi.spyOn(console, "error").mockImplementation(noop),
+  };
+
+  beforeEach(() => {
+    consoleSpy.group.mockClear();
+    consoleSpy.groupEnd.mockClear();
+    consoleSpy.error.mockClear();
+  });
+
+  test("logs request timing", async () => {
+    await clientWithDebug.contact.get();
+    const req = await request;
+    const requestId = req.headers.get("X-Request-Id");
+
+    expect(consoleSpy.group).toHaveBeenCalledWith(
+      `\u001b[1mCiviCRM request\u001b[22m ${requestId} \u001b[90mhttps://example.com/civicrm/ajax/api4/Contact/get\u001b[39m 200 in \u001b[33m0ms\u001b[39m`,
+    );
+    expect(consoleSpy.groupEnd).toHaveBeenCalled();
+  });
+
+  test("logs request errors", async () => {
+    try {
+      await clientWithDebug.activity.get();
+    } catch {}
+
+    expect(consoleSpy.group).toHaveBeenCalled();
+    expect(consoleSpy.error).toHaveBeenCalledWith("Internal Server Error");
+    expect(consoleSpy.groupEnd).toHaveBeenCalled();
   });
 });

@@ -1,4 +1,5 @@
 import { isEmpty } from "lodash-es";
+import { bold, gray, yellow } from "picocolors";
 
 import { RequestParams } from "./types";
 
@@ -6,6 +7,7 @@ export async function request(
   this: {
     baseUrl: string;
     apiKey: string;
+    debug?: boolean;
   },
   [entity, action, params, index]: RequestParams,
   { headers, ...requestOptions }: RequestInit = {},
@@ -24,6 +26,8 @@ export async function request(
     url.searchParams.append("index", String(index));
   }
 
+  const start = performance.now();
+
   const res = await fetch(url, {
     method: "POST",
     headers: {
@@ -36,11 +40,30 @@ export async function request(
     ...requestOptions,
   });
 
+  if (this.debug) {
+    const time = `${Math.round(performance.now() - start)}ms`;
+
+    console.group(
+      `${bold("CiviCRM request")} ${requestId} ${gray(res.url)} ${res.status} in ${yellow(time)}`,
+    );
+  }
+
   if (!res.ok) {
-    throw new Error(`CiviCRM request failed: ${await res.text()}`);
+    const error = await res.text();
+
+    if (this.debug) {
+      console.error(error);
+      console.groupEnd();
+    }
+
+    throw new Error("CiviCRM request failed");
   }
 
   const json = await res.json();
+
+  if (this.debug) {
+    console.groupEnd();
+  }
 
   return json.values;
 }

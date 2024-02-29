@@ -7,6 +7,7 @@ export interface ClientConfig<E extends EntitiesConfig> {
   apiKey: string;
   entities: E;
   requestOptions?: RequestInit;
+  debug?: boolean;
 }
 
 export type Client<E extends EntitiesConfig> = {
