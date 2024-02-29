@@ -2,6 +2,8 @@
 
 JavaScript (and TypeScript) client for [CiviCRM API v4](https://docs.civicrm.org/dev/en/latest/api/v4/usage/).
 
+Currently only tested in Node.js, browser support is work in progress.
+
 ## Installation
 
 ```sh
