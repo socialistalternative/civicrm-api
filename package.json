@@ -1,7 +1,7 @@
 {
   "name": "civicrm-api",
   "type": "module",
-  "version": "0.1.0-4",
+  "version": "0.1.0-5",
   "source": "src/index.ts",
   "main": "./dist/index.cjs",
   "module": "./dist/index.module.js",
