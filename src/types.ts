@@ -87,3 +87,7 @@ export type Index = number;
 
 export type RequestParams = [Entity, Action, Params?, Index?];
 export type RequestFn<T> = (params: RequestParams) => Promise<T>;
+
+export interface Response {
+  [key: string]: Value | Response;
+}

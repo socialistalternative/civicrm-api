@@ -8,7 +8,7 @@ export async function request(
     apiKey: string;
   },
   [entity, action, params, index]: RequestParams,
-  { headers, ...requestInit }: RequestInit = {},
+  { headers, ...requestOptions }: RequestInit = {},
 ) {
   const requestId = crypto.randomUUID();
 
@@ -33,7 +33,7 @@ export async function request(
       "X-Request-ID": requestId,
       ...headers,
     },
-    ...requestInit,
+    ...requestOptions,
   });
 
   if (!res.ok) {

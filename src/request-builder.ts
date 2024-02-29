@@ -6,9 +6,12 @@ import {
   Params,
   RequestFn,
   RequestParams,
+  Response,
 } from "./types";
 
-export class RequestBuilder<T = any> implements PromiseLike<T> {
+export class RequestBuilder<T = Response | Response[]>
+  implements PromiseLike<T>
+{
   private readonly entity: Entity;
   private readonly request: RequestFn<T>;
   private innerPromise: Promise<T>;
@@ -83,8 +86,8 @@ export class RequestBuilder<T = any> implements PromiseLike<T> {
     return this;
   }
 
-  chain(name: string, req: RequestBuilder) {
-    this.chains[name] = req;
+  chain(label: string, requestBuilder: RequestBuilder) {
+    this.chains[label] = requestBuilder;
 
     return this;
   }
