@@ -290,9 +290,11 @@ describe("debug", () => {
   };
 
   beforeEach(() => {
-    consoleSpy.group.mockClear();
-    consoleSpy.groupEnd.mockClear();
-    consoleSpy.error.mockClear();
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.resetAllMocks();
   });
 
   test("logs request timing", async () => {
