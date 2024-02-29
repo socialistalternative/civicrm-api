@@ -1,15 +1,17 @@
 {
   "name": "civicrm-api",
   "type": "module",
-  "source": "src/index.ts",
   "version": "0.1.0-1",
-  "exports": {
-    "require": "./dist/index.cjs",
-    "default": "./dist/index.modern.js"
-  },
+  "source": "src/index.ts",
   "main": "./dist/index.cjs",
   "module": "./dist/index.module.js",
   "unpkg": "./dist/index.umd.js",
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "require": "./dist/index.cjs",
+    "default": "./dist/index.modern.js"
+  },
+  "types": "./dist/index.d.ts",
   "scripts": {
     "build": "microbundle",
     "dev": "microbundle watch",
