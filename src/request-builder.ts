@@ -6,12 +6,9 @@ import {
   Params,
   RequestFn,
   RequestParams,
-  Response,
 } from "./types";
 
-export class RequestBuilder<T = Response | Response[]>
-  implements PromiseLike<T>
-{
+export class RequestBuilder<T = unknown> implements PromiseLike<T> {
   private readonly entity: Entity;
   private readonly request: RequestFn<T>;
   private innerPromise: Promise<T>;
