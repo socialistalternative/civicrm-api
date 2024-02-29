@@ -19,10 +19,7 @@ const client = createClient({
   entities: { contact: "Contact" },
 });
 
-const contactRequest = client
-  .contact()
-  .get({ where: { id: 1 } })
-  .one();
+const contactRequest = client.contact.get({ where: { id: 1 } }).one();
 ```
 
 ## API
@@ -56,25 +53,22 @@ const client = createClient({
 });
 ```
 
-### `client.<entity>(requestOptions?: RequestInit): RequestBuilder`
+#### options.requestOptions
 
-Create a request builder for a configured entity.
-
-#### requestOptions
+Set default request options for all requests.
 
 Accepts
 the [same options as `fetch`](https://developer.mozilla.org/en-US/docs/Web/API/fetch#options).
 
 Headers will be merged with the default headers.
 
-```ts
-client.contact({
-  headers: {
-    "X-Custom-Header": "value",
-  },
-  cache: "no-cache",
-});
-```
+#### options.debug
+
+Enable logging request and response details to the console.
+
+### `client.<entity>: RequestBuilder`
+
+Create a request builder for a configured entity.
 
 ### Request builder
 
@@ -85,8 +79,7 @@ calling `.then()` or starting a chain with `await`.
 
 ```ts
 // Using .then()
-client
-  .contact()
+client.contact
   .get({ where: { id: 1 } })
   .one()
   .then((contact) => {
@@ -94,10 +87,7 @@ client
   });
 
 // Using await
-const contact = await client
-  .contact()
-  .get({ where: { id: 1 } })
-  .one();
+const contact = await client.contact.get({ where: { id: 1 } }).one();
 ```
 
 #### `get(params?: Params): RequestBuilder`
@@ -133,12 +123,11 @@ Return a single record (i.e. set the index of the request to 0).
 for another entity within the current API call.
 
 ```ts
-const contact = await client
-  .contact()
+const contact = await client.contact
   .get({ where: { id: 1 } })
   .chain(
     "activity",
-    client.activity().get({ where: { target_contact_id: "$id" } }),
+    client.activity.get({ where: { target_contact_id: "$id" } }),
   )
   .one();
 
@@ -146,14 +135,34 @@ console.log(contact);
 // => { id: 1, activity: [{ target_contact_id: 1, ... }], ... }
 ```
 
-#### label
+##### label
 
 The label for the chained request, which will be used access the result of the
 chained request within the response.
 
-#### requestBuilder
+##### requestBuilder
 
 A request builder for the chained request.
+
+#### `options(requestOptions: RequestInit): RequestBuilder`
+
+Set request options.
+
+#### requestOptions
+
+Accepts
+the [same options as `fetch`](https://developer.mozilla.org/en-US/docs/Web/API/fetch#options).
+
+Headers will be merged with the default headers.
+
+```ts
+client.contact.get().options({
+  headers: {
+    "X-Custom-Header": "value",
+  },
+  cache: "no-cache",
+});
+```
 
 ## Development
 
