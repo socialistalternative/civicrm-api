@@ -8,7 +8,7 @@ import {
   RequestParams,
 } from "./types";
 
-export class RequestBuilder<T = unknown> implements PromiseLike<T> {
+export class RequestBuilder<T = any> implements PromiseLike<T> {
   private readonly entity: Entity;
   private readonly request: RequestFn<T>;
   private innerPromise: Promise<T>;
