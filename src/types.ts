@@ -58,7 +58,9 @@ type WhereOperator =
   | "REGEXP"
   | "NOT REGEXP";
 
-type Where = [Field, WhereOperator, Value?];
+type Where =
+  | [Field, WhereOperator, Value?]
+  | ["OR", [Field, WhereOperator, Value?]];
 
 type Order = "ASC" | "DESC";
 
