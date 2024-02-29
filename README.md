@@ -1,6 +1,6 @@
 # CiviCRM API
 
-JavaScript/TypeScript client for CiviCRM API v4.
+JavaScript (and TypeScript) client for [CiviCRM API v4](https://docs.civicrm.org/dev/en/latest/api/v4/usage/).
 
 ## Installation
 
