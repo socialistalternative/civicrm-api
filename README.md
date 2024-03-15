@@ -166,6 +166,10 @@ client.contact.get().options({
 });
 ```
 
+## Alternatives
+
+- The [civicrm](https://www.npmjs.com/package/civicrm) package from [Tech to The People](https://github.com/TechToThePeople) offers a different approach to building requests and targets browsers and web workers as well as Node.js.
+
 ## Development
 
 ### Install dependencies
