@@ -31,7 +31,7 @@ export async function request(
   const res = await fetch(url, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${this.apiKey}`,
+      "X-Civi-Auth": `Bearer ${this.apiKey}`,
       "Content-Type": "application/x-www-form-urlencoded",
       "X-Requested-With": "XMLHttpRequest",
       "X-Request-ID": requestId,

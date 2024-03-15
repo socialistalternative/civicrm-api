@@ -58,7 +58,7 @@ test("sets request headers", async () => {
   await client.contact.get();
   const req = await request;
 
-  expect(req.headers.get("Authorization")).toBe("Bearer mock-api-key");
+  expect(req.headers.get("X-Civi-Auth")).toBe("Bearer mock-api-key");
   expect(req.headers.get("X-Requested-With")).toBe("XMLHttpRequest");
   expect(req.headers.get("Content-Type")).toBe(
     "application/x-www-form-urlencoded",
@@ -86,7 +86,7 @@ test("accepts additional headers", async () => {
     .get();
   const req = await request;
 
-  expect(req.headers.get("Authorization")).toBe("Bearer mock-api-key");
+  expect(req.headers.get("X-Civi-Auth")).toBe("Bearer mock-api-key");
   expect(req.headers.get("X-Correlation-Id")).toBe("mock-correlation-id");
 });
 
@@ -108,7 +108,7 @@ test("accepts default request options", async () => {
   const req = await request;
 
   expect(req.cache).toBe("no-cache");
-  expect(req.headers.get("Authorization")).toBe("Bearer mock-api-key");
+  expect(req.headers.get("X-Civi-Auth")).toBe("Bearer mock-api-key");
   expect(req.headers.get("X-Correlation-Id")).toBe("mock-correlation-id");
 });
 
