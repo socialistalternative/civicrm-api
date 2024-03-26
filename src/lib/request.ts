@@ -1,7 +1,4 @@
-import { isEmpty } from "lodash-es";
 import { bold, gray, yellow } from "picocolors";
-
-import { RequestParams } from "./types";
 
 export async function request(
   this: {
@@ -9,21 +6,16 @@ export async function request(
     apiKey: string;
     debug?: boolean;
   },
-  [entity, action, params, index]: RequestParams,
+  path: string,
+  params?: URLSearchParams,
   { headers, ...requestOptions }: RequestInit = {},
 ) {
   const requestId = crypto.randomUUID();
 
-  const url = new URL(`civicrm/ajax/api4/${entity}/${action}`, this.baseUrl);
+  const url = new URL(path, this.baseUrl);
 
-  if (!isEmpty(params)) {
-    url.search = new URLSearchParams({
-      params: JSON.stringify(params),
-    }).toString();
-  }
-
-  if (index !== undefined) {
-    url.searchParams.append("index", String(index));
+  if (params) {
+    url.search = params.toString();
   }
 
   const start = performance.now();
@@ -50,20 +42,28 @@ export async function request(
 
   if (!res.ok) {
     const error = await res.text();
-
-    if (this.debug) {
-      console.error(error);
-      console.groupEnd();
-    }
-
-    throw new Error("CiviCRM request failed");
+    handleError.call(this, error);
   }
 
   const json = await res.json();
+
+  if (json.is_error) {
+    handleError.call(this, json);
+  }
 
   if (this.debug) {
     console.groupEnd();
   }
 
   return json.values;
+}
+
+function handleError(error: any) {
+  if (this.debug) {
+    console.error(error);
+    console.groupEnd();
+  }
+
+  // TODO: make this error more informative
+  throw new Error("CiviCRM request failed");
 }
