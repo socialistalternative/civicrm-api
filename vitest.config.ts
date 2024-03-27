@@ -4,6 +4,9 @@ import { configDefaults } from "vitest/config";
 
 export default defineConfig({
   test: {
+    coverage: {
+      include: ["src/**"],
+    },
     dir: "test",
     exclude: ["**/browser/**"],
     setupFiles: ["test/mock/server.ts"],

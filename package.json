@@ -16,13 +16,15 @@
     "build": "microbundle",
     "dev": "microbundle watch",
     "test": "vitest",
-    "test:browser": "vitest --config vitest.browser.config.js"
+    "test:browser": "vitest --config vitest.browser.config.js",
+    "coverage": "vitest run --coverage"
   },
   "license": "MIT",
   "devDependencies": {
     "@open-draft/deferred-promise": "^2.2.0",
     "@types/lodash-es": "^4.17.12",
     "@vitest/browser": "^1.4.0",
+    "@vitest/coverage-v8": "^1.4.0",
     "microbundle": "^0.15.1",
     "msw": "^2.2.2",
     "prettier": "^3.2.5",
