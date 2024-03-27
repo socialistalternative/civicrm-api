@@ -4,17 +4,16 @@ import { Api3 } from "./api3/types";
 import { createApi4Client } from "./api4/client";
 import { createApi3Client } from "./api3/client";
 
+function validateConfig(config: ClientConfig<any, any>): void {
+  if (!config.baseUrl) throw new Error("baseUrl is required");
+  if (!config.auth) throw new Error("auth is required");
+}
+
 export function createClient<
   E extends Api4.EntitiesConfig,
   F extends Api3.EntitiesConfig,
 >(config: ClientConfig<E, F>): Client<E, F> {
-  if (!config.baseUrl) {
-    throw new Error("baseUrl is required");
-  }
-
-  if (!config.apiKey) {
-    throw new Error("apiKey is required");
-  }
+  validateConfig(config);
 
   const client = createApi4Client(config) as Client<E, F>;
 

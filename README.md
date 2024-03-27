@@ -2,8 +2,6 @@
 
 JavaScript (and TypeScript) client for the [CiviCRM API](https://docs.civicrm.org/dev/en/latest/api/v4/usage/).
 
-Currently only tested in Node.js, browser support is work in progress.
-
 ## Installation
 
 ```sh
@@ -17,7 +15,7 @@ import { createClient } from "civicrm-api";
 
 const client = createClient({
   baseUrl: "https://example.com/civicrm",
-  apiKey: "your-api-key",
+  authentication: { apiKey: "<your-api-key>" },
   entities: { contact: "Contact" },
 });
 
@@ -56,10 +54,24 @@ Configure a CiviCRM API client.
 
 The base URL of the CiviCRM installation.
 
-#### options.apiKey
+#### options.auth
 
-The [API key](https://docs.civicrm.org/sysadmin/en/latest/setup/api-keys/) to
-use for authentication.
+The API key, JWT, or username and password that will be used to authenticate requests. Refer to the [CiviCRM authentication](https://docs.civicrm.org/dev/en/latest/framework/authx/#authentication) documentation.
+
+```ts
+const client = createClient({
+  // ...
+
+  authentication: { apiKey: "api-key" },
+  //=> X-Civi-Auth: Bearer api-key
+
+  authentication: { jwt: "jwt" },
+  //=> X-Civi-Auth: Bearer jwt
+
+  authentication: { username: "user", password: "pass" },
+  //=> X-Civi-Auth: Basic dXNlcjpwYXNz
+});
+```
 
 #### options.entities
 
@@ -279,7 +291,7 @@ client.api3.contact.getList().options({
 
 ## Alternatives
 
-- The [civicrm](https://www.npmjs.com/package/civicrm) package from [Tech to The People](https://github.com/TechToThePeople) offers a different approach to building requests and targets browsers and web workers as well as Node.js.
+- The [civicrm](https://www.npmjs.com/package/civicrm) package from [Tech to The People](https://github.com/TechToThePeople) offers a different approach to building requests.
 
 ## Development
 

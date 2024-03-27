@@ -8,12 +8,17 @@ export type Client<
   api3: Api3.Client<F>;
 };
 
+export type AuthenticationConfig =
+  | { apiKey: string }
+  | { jwt: string }
+  | { username: string; password: string };
+
 export interface ClientConfig<
   E extends Api4.EntitiesConfig,
   F extends Api3.EntitiesConfig,
 > {
   baseUrl: string;
-  apiKey: string;
+  auth: AuthenticationConfig;
   entities?: E;
   requestOptions?: RequestInit;
   debug?: boolean;

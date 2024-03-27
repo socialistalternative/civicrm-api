@@ -1,11 +1,34 @@
 import { bold, gray, yellow } from "picocolors";
+import { AuthenticationConfig, ClientConfig } from "../types";
+
+function authenticationHeader(auth: AuthenticationConfig): string {
+  if ("apiKey" in auth) {
+    return `Bearer ${auth.apiKey}`;
+  }
+
+  if ("jwt" in auth) {
+    return `Bearer ${auth.jwt}`;
+  }
+
+  if ("username" in auth) {
+    return `Basic ${btoa(`${auth.username}:${auth.password}`)}`;
+  }
+
+  throw new Error("auth must contain apiKey, jwt, or username/password");
+}
+
+function handleError(error: string) {
+  if (this.debug) {
+    console.error(error);
+    console.groupEnd();
+  }
+
+  // TODO: make this error more informative
+  throw new Error("CiviCRM request failed");
+}
 
 export async function request(
-  this: {
-    baseUrl: string;
-    apiKey: string;
-    debug?: boolean;
-  },
+  this: ClientConfig<any, any>,
   path: string,
   params?: URLSearchParams,
   { headers, ...requestOptions }: RequestInit = {},
@@ -23,7 +46,7 @@ export async function request(
   const res = await fetch(url, {
     method: "POST",
     headers: {
-      "X-Civi-Auth": `Bearer ${this.apiKey}`,
+      "X-Civi-Auth": authenticationHeader(this.auth),
       "Content-Type": "application/x-www-form-urlencoded",
       "X-Requested-With": "XMLHttpRequest",
       "X-Request-ID": requestId,
@@ -56,14 +79,4 @@ export async function request(
   }
 
   return json.values;
-}
-
-function handleError(error: any) {
-  if (this.debug) {
-    console.error(error);
-    console.groupEnd();
-  }
-
-  // TODO: make this error more informative
-  throw new Error("CiviCRM request failed");
 }

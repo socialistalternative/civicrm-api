@@ -3,11 +3,11 @@ import { noop } from "lodash-es";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
 import { createClient } from "../src";
-import { server } from "./mock-server";
+import { server } from "./mock/server";
 
 const config = {
   baseUrl: "https://example.com",
-  apiKey: "mock-api-key",
+  auth: { apiKey: "mock-api-key" },
   entities: {
     contact: "Contact",
     activity: "Activity",

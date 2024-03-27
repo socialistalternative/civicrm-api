@@ -4,7 +4,9 @@ import { configDefaults } from "vitest/config";
 
 export default defineConfig({
   test: {
-    setupFiles: ["./test/mock-server.ts"],
+    dir: "test",
+    exclude: ["**/browser/**"],
+    setupFiles: ["test/mock/server.ts"],
     fakeTimers: {
       toFake: [...configDefaults.fakeTimers.toFake, "performance"],
     },
