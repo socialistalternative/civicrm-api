@@ -8,7 +8,7 @@ export type Client<
   api3: Api3.Client<F>;
 };
 
-export type AuthenticationConfig =
+export type Authentication =
   | { apiKey: string }
   | { jwt: string }
   | { username: string; password: string };
@@ -18,7 +18,7 @@ export interface ClientConfig<
   F extends Api3.EntitiesConfig,
 > {
   baseUrl: string;
-  auth: AuthenticationConfig;
+  auth?: Authentication;
   entities?: E;
   requestOptions?: RequestInit;
   debug?: boolean;
@@ -31,4 +31,5 @@ export interface ClientConfig<
 export type BaseRequestFn<RequestParams, Response> = (
   params: RequestParams,
   requestOptions: RequestInit,
+  auth?: Authentication,
 ) => Promise<Response>;

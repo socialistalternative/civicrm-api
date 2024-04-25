@@ -1,4 +1,4 @@
-import { BaseRequestFn } from "../types";
+import { Authentication, BaseRequestFn } from "../types";
 
 export class RequestBuilder<RequestParams = any, T = any>
   implements PromiseLike<T>
@@ -6,15 +6,22 @@ export class RequestBuilder<RequestParams = any, T = any>
   protected readonly entity: string;
   protected readonly request: BaseRequestFn<RequestParams, T>;
   protected innerPromise: Promise<T>;
-  protected requestOptions: RequestInit = {};
+  protected _requestOptions: RequestInit = {};
+  protected _auth: Authentication;
 
   constructor(entity: string, request: BaseRequestFn<RequestParams, T>) {
     this.entity = entity;
     this.request = request;
   }
 
-  options(requestOptions: RequestInit) {
-    this.requestOptions = requestOptions;
+  requestOptions(requestOptions: RequestInit) {
+    this._requestOptions = requestOptions;
+
+    return this;
+  }
+
+  auth(auth: Authentication) {
+    this._auth = auth;
 
     return this;
   }
@@ -38,7 +45,11 @@ export class RequestBuilder<RequestParams = any, T = any>
 
   getInnerPromise() {
     if (!this.innerPromise) {
-      this.innerPromise = this.request(this.requestParams, this.requestOptions);
+      this.innerPromise = this.request(
+        this.requestParams,
+        this._requestOptions,
+        this._auth,
+      );
     }
 
     return this.innerPromise;

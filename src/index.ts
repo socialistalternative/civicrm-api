@@ -6,7 +6,6 @@ import { createApi3Client } from "./api3/client";
 
 function validateConfig(config: ClientConfig<any, any>): void {
   if (!config.baseUrl) throw new Error("baseUrl is required");
-  if (!config.auth) throw new Error("auth is required");
 }
 
 export function createClient<

@@ -15,7 +15,7 @@ import { createClient } from "civicrm-api";
 
 const client = createClient({
   baseUrl: "https://example.com/civicrm",
-  authentication: { apiKey: "<your-api-key>" },
+  auth: { apiKey: "<your-api-key>" },
   entities: { contact: "Contact" },
 });
 
@@ -62,13 +62,13 @@ The API key, JWT, or username and password that will be used to authenticate req
 const client = createClient({
   // ...
 
-  authentication: { apiKey: "api-key" },
+  auth: { apiKey: "api-key" },
   //=> X-Civi-Auth: Bearer api-key
 
-  authentication: { jwt: "jwt" },
+  auth: { jwt: "jwt" },
   //=> X-Civi-Auth: Bearer jwt
 
-  authentication: { username: "user", password: "pass" },
+  auth: { username: "user", password: "pass" },
   //=> X-Civi-Auth: Basic dXNlcjpwYXNz
 });
 ```

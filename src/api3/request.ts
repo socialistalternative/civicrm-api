@@ -2,6 +2,7 @@ import { isEmpty } from "lodash-es";
 
 import { Api3 } from "./types";
 import { request as baseRequest } from "../lib/request";
+import { Authentication } from "../types";
 
 const path = "civicrm/ajax/rest";
 
@@ -13,6 +14,7 @@ export async function request(
   },
   [entity, action, params, options]: Api3.RequestParams,
   requestOptions: RequestInit = {},
+  auth?: Authentication,
 ) {
   const json = isEmpty(options) ? { ...params } : { ...params, options };
 
@@ -22,5 +24,5 @@ export async function request(
     json: JSON.stringify(json),
   });
 
-  return baseRequest.bind(this)(path, searchParams, requestOptions);
+  return baseRequest.bind(this)(path, searchParams, requestOptions, auth);
 }

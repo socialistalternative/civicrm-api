@@ -1,7 +1,12 @@
 import { bold, gray, yellow } from "picocolors";
-import { AuthenticationConfig, ClientConfig } from "../types";
+import { Authentication, BaseRequestFn, ClientConfig } from "../types";
 
-function authenticationHeader(auth: AuthenticationConfig): string {
+function authenticationHeader(auth?: Authentication): string {
+  if (!auth)
+    throw new Error(
+      "auth is required, configure it in client config or using the auth method",
+    );
+
   if ("apiKey" in auth) {
     return `Bearer ${auth.apiKey}`;
   }
@@ -27,11 +32,30 @@ function handleError(error: string) {
   throw new Error("CiviCRM request failed");
 }
 
+export function bindRequest(
+  requestFn: BaseRequestFn<any, any>,
+  config: ClientConfig<any, any>,
+): BaseRequestFn<any, any> {
+  return (requestParams, requestOptions, auth) =>
+    requestFn.bind(config)(
+      requestParams,
+      {
+        ...config.requestOptions,
+        ...requestOptions,
+      },
+      {
+        ...config.auth,
+        ...auth,
+      },
+    );
+}
+
 export async function request(
   this: ClientConfig<any, any>,
   path: string,
   params?: URLSearchParams,
   { headers, ...requestOptions }: RequestInit = {},
+  auth?: Authentication,
 ) {
   const requestId = crypto.randomUUID();
 
@@ -46,7 +70,7 @@ export async function request(
   const res = await fetch(url, {
     method: "POST",
     headers: {
-      "X-Civi-Auth": authenticationHeader(this.auth),
+      "X-Civi-Auth": authenticationHeader(auth),
       "Content-Type": "application/x-www-form-urlencoded",
       "X-Requested-With": "XMLHttpRequest",
       "X-Request-ID": requestId,

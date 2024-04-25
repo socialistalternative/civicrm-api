@@ -4,6 +4,7 @@ import { request } from "./request";
 import { Api4 } from "./types";
 import { RequestBuilder } from "./request-builder";
 import { ClientConfig } from "../types";
+import { bindRequest } from "../lib/request";
 
 export function createApi4Client<E extends Api4.EntitiesConfig>(
   config: ClientConfig<E, any>,
@@ -12,13 +13,7 @@ export function createApi4Client<E extends Api4.EntitiesConfig>(
 
   forIn(config.entities, (entity: string, key: string) => {
     Reflect.defineProperty(client, key, {
-      get: () =>
-        new RequestBuilder(entity, (requestParams, requestOptions) =>
-          request.bind(config)(requestParams, {
-            ...config.requestOptions,
-            ...requestOptions,
-          }),
-        ),
+      get: () => new RequestBuilder(entity, bindRequest(request, config)),
     });
   });
 
