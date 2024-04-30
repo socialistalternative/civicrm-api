@@ -22,7 +22,7 @@
   "license": "MIT",
   "devDependencies": {
     "@open-draft/deferred-promise": "^2.2.0",
-    "@types/lodash": "^4.17.0",
+    "@types/lodash-es": "^4.17.12",
     "@vitest/browser": "^1.4.0",
     "@vitest/coverage-v8": "^1.4.0",
     "microbundle": "^0.15.1",
@@ -37,6 +37,6 @@
     ]
   },
   "dependencies": {
-    "lodash": "^4.17.21"
+    "lodash-es": "^4.17.21"
   }
 }
