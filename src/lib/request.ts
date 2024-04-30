@@ -1,4 +1,3 @@
-import { bold, gray, yellow } from "picocolors";
 import { Authentication, BaseRequestFn, ClientConfig } from "../types";
 
 function authenticationHeader(auth?: Authentication): string {
@@ -83,7 +82,7 @@ export async function request(
     const time = `${Math.round(performance.now() - start)}ms`;
 
     console.group(
-      `${bold("CiviCRM request")} ${requestId} ${gray(res.url)} ${res.status} in ${yellow(time)}`,
+      `CiviCRM request ${requestId} ${res.url} ${res.status} in ${time}`,
     );
   }
 
