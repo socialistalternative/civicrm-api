@@ -1,4 +1,4 @@
-import { forIn } from "lodash-es";
+import forIn from "lodash/forIn";
 
 import { request } from "./request";
 import { Api3 } from "./types";

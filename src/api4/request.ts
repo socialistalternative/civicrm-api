@@ -1,4 +1,4 @@
-import { isEmpty } from "lodash-es";
+import isEmpty from "lodash/isEmpty";
 
 import { Api4 } from "./types";
 import { request as baseRequest } from "../lib/request";
