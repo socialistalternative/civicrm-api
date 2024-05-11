@@ -6,6 +6,13 @@ export type Client<
   F extends Api3.EntitiesConfig,
 > = Api4.Client<E> & {
   api3: Api3.Client<F>;
+} & {
+  request: (
+    path: string,
+    params?: URLSearchParams,
+    requestOptions?: RequestOptions,
+    auth?: Authentication,
+  ) => Promise<any>;
 };
 
 export type Authentication =

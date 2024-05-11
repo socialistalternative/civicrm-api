@@ -23,8 +23,6 @@ export namespace Api3 {
   export type Client<E extends EntitiesConfig> = {
     [K in keyof E]: RequestBuilder<E[K]["actions"]> &
       ActionMethods<E[K]["actions"]>;
-  } & {
-    request: RequestFn<any>;
   };
 
   export type Value =

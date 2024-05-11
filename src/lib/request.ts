@@ -1,4 +1,9 @@
-import { Authentication, BaseRequestFn, ClientConfig } from "../types";
+import {
+  Authentication,
+  BaseRequestFn,
+  ClientConfig,
+  RequestOptions,
+} from "../types";
 
 function authenticationHeader(auth?: Authentication): string {
   if (!auth)
@@ -38,14 +43,8 @@ export function bindRequest(
   return (requestParams, requestOptions, auth) =>
     requestFn.bind(config)(
       requestParams,
-      {
-        ...config.requestOptions,
-        ...requestOptions,
-      },
-      {
-        ...config.auth,
-        ...auth,
-      },
+      { ...config.requestOptions, ...requestOptions },
+      { ...config.auth, ...auth },
     );
 }
 
@@ -53,9 +52,9 @@ export async function request(
   this: ClientConfig<any, any>,
   path: string,
   params?: URLSearchParams,
-  { headers, ...requestOptions }: RequestInit = {},
+  { headers, ...requestOptions }: RequestOptions = {},
   auth?: Authentication,
-) {
+): Promise<any> {
   const requestId = crypto.randomUUID();
 
   const url = new URL(path, this.baseUrl);

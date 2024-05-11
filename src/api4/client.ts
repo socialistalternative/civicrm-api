@@ -9,13 +9,13 @@ import { bindRequest } from "../lib/request";
 export function createApi4Client<E extends Api4.EntitiesConfig>(
   config: ClientConfig<E, any>,
 ) {
-  const client = {
-    request: bindRequest(request, config),
-  } as Api4.Client<E>;
+  const boundRequest = bindRequest(request, config);
+
+  const client = {} as Api4.Client<E>;
 
   forIn(config.entities, (entity: string, key: string) => {
     Reflect.defineProperty(client, key, {
-      get: () => new RequestBuilder(entity, client.request),
+      get: () => new RequestBuilder(entity, boundRequest),
     });
   });
 

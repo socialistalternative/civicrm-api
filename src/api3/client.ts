@@ -9,18 +9,15 @@ import { bindRequest } from "../lib/request";
 export function createApi3Client<E extends Api3.EntitiesConfig>(
   config: ClientConfig<any, E>,
 ) {
-  const client = {
-    request: bindRequest(request, config),
-  } as Api3.Client<E>;
+  const boundRequest = bindRequest(request, config);
 
-  forIn(
-    config.api3!.entities,
-    ({ name, actions }: Api3.EntityConfig, entity: string) => {
-      Reflect.defineProperty(client, entity, {
-        get: () => new RequestBuilder(name, client.request, actions),
-      });
-    },
-  );
+  const client = {} as Api3.Client<E>;
+
+  forIn(config.api3!.entities, (entity: Api3.EntityConfig, key: string) => {
+    Reflect.defineProperty(client, key, {
+      get: () => new RequestBuilder(entity.name, boundRequest, entity.actions),
+    });
+  });
 
   return client;
 }
