@@ -2,7 +2,7 @@ import { isEmpty } from "lodash-es";
 
 import { Api4 } from "./types";
 import { request as baseRequest } from "../lib/request";
-import { Authentication } from "../types";
+import { Authentication, RequestOptions } from "../types";
 
 export async function request(
   this: {
@@ -11,7 +11,7 @@ export async function request(
     debug?: boolean;
   },
   [entity, action, params, index]: Api4.RequestParams,
-  requestOptions: RequestInit = {},
+  requestOptions: RequestOptions = {},
   auth?: Authentication,
 ) {
   const path = `civicrm/ajax/api4/${entity}/${action}`;

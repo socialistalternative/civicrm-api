@@ -13,6 +13,8 @@ export type Authentication =
   | { jwt: string }
   | { username: string; password: string };
 
+export type RequestOptions = RequestInit;
+
 export interface ClientConfig<
   E extends Api4.EntitiesConfig,
   F extends Api3.EntitiesConfig,
@@ -20,7 +22,7 @@ export interface ClientConfig<
   baseUrl: string;
   auth?: Authentication;
   entities?: E;
-  requestOptions?: RequestInit;
+  requestOptions?: RequestOptions;
   debug?: boolean;
   api3?: {
     enabled: boolean;
@@ -30,6 +32,6 @@ export interface ClientConfig<
 
 export type BaseRequestFn<RequestParams, Response> = (
   params: RequestParams,
-  requestOptions: RequestInit,
+  requestOptions: RequestOptions,
   auth?: Authentication,
 ) => Promise<Response>;

@@ -6,6 +6,8 @@ export namespace Api4 {
 
   export type Client<E extends EntitiesConfig> = {
     [K in keyof E]: RequestBuilder;
+  } & {
+    request: RequestFn<any>;
   };
 
   export enum Action {

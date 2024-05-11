@@ -16,7 +16,7 @@ export class RequestBuilder<
 
     forIn(actions, (action: string, key: string) => {
       this[key] = (params?: Api3.Params) => {
-        this.action = action as any;
+        this.action = action;
         this.params = params;
 
         return this;
