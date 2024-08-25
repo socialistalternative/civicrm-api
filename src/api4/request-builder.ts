@@ -1,4 +1,5 @@
-import { isEmpty, mapValues } from "lodash-es";
+import isEmpty from "lodash.isempty";
+import mapValues from "lodash.mapvalues";
 
 import { Api4 } from "./types";
 import { RequestBuilder as BaseRequestBuilder } from "../lib/request-builder";
