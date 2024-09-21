@@ -74,7 +74,7 @@ test("sets request headers", async () => {
 });
 
 test("accepts request options", async () => {
-  await client.api3.contact.options({ cache: "no-cache" }).getList();
+  await client.api3.contact.requestOptions({ cache: "no-cache" }).getList();
   const req = await request;
 
   expect(req.cache).toBe("no-cache");
@@ -82,7 +82,7 @@ test("accepts request options", async () => {
 
 test("accepts additional headers", async () => {
   await client.api3.contact
-    .options({ headers: { "X-Correlation-Id": "mock-correlation-id" } })
+    .requestOptions({ headers: { "X-Correlation-Id": "mock-correlation-id" } })
     .getList();
   const req = await request;
 
@@ -121,7 +121,7 @@ test("accepts params", async () => {
 });
 
 test("accepts options", async () => {
-  await client.api3.contact.getList().addOption("limit", 10);
+  await client.api3.contact.getList().option("limit", 10);
   const req = await request;
 
   const searchParams = new URL(req.url).searchParams;
@@ -133,7 +133,7 @@ test("accepts options", async () => {
 test("accepts params and options", async () => {
   await client.api3.contact
     .getList({ input: "mock-input" })
-    .addOption("limit", 10);
+    .option("limit", 10);
   const req = await request;
 
   const searchParams = new URL(req.url).searchParams;
@@ -165,7 +165,7 @@ describe("debug", () => {
     const requestId = req.headers.get("X-Request-Id");
 
     expect(consoleSpy.group).toHaveBeenCalledWith(
-      `\u001b[1mCiviCRM request\u001b[22m ${requestId} \u001b[90mhttps://example.com/civicrm/ajax/rest?entity=Contact&action=getlist&json=%7B%7D\u001b[39m 200 in \u001b[33m0ms\u001b[39m`,
+      `CiviCRM request ${requestId} https://example.com/civicrm/ajax/rest?entity=Contact&action=getlist&json=%7B%7D 200 in 0ms`,
     );
     expect(consoleSpy.groupEnd).toHaveBeenCalled();
   });

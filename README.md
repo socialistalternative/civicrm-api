@@ -228,7 +228,7 @@ the [same options as `fetch`](https://developer.mozilla.org/en-US/docs/Web/API/f
 Headers will be merged with the default headers.
 
 ```ts
-client.contact.get().options({
+client.contact.get().requestOptions({
   headers: {
     "X-Custom-Header": "value",
   },
@@ -261,12 +261,12 @@ const contacts = await client.getList({ input: "example" });
 
 Set the action for the request, and optionally set request parameters.
 
-#### `addOption(option: string, value: Api3.Value): Api3.RequestBuilder`
+#### `option(option: string, value: Api3.Value): Api3.RequestBuilder`
 
 Set [API options](https://docs.civicrm.org/dev/en/latest/api/v3/options/).
 
 ```ts
-client.api3.contact.getList().addOption("limit", 10);
+client.api3.contact.getList().option("limit", 10);
 ```
 
 #### `options(requestOptions: RequestInit): Api3.RequestBuilder`
@@ -281,7 +281,7 @@ the [same options as `fetch`](https://developer.mozilla.org/en-US/docs/Web/API/f
 Headers will be merged with the default headers.
 
 ```ts
-client.api3.contact.getList().options({
+client.api3.contact.getList().requestOptions({
   headers: {
     "X-Custom-Header": "value",
   },
