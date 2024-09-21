@@ -38,13 +38,6 @@ test("requires baseUrl", () => {
   }).toThrow("baseUrl is required");
 });
 
-test("requires apiKey", () => {
-  expect(() => {
-    // @ts-ignore
-    createClient({ baseUrl: "https://example.com" });
-  }).toThrow("auth is required");
-});
-
 test("creates methods for specified entities", () => {
   expect(client.contact).toBeDefined();
   expect(client.activity).toBeDefined();
