@@ -6,16 +6,30 @@ export type Client<
   F extends Api3.EntitiesConfig,
 > = Api4.Client<E> & {
   api3: Api3.Client<F>;
+} & {
+  request: (
+    path: string,
+    params?: URLSearchParams,
+    requestOptions?: RequestOptions,
+    auth?: Authentication,
+  ) => Promise<any>;
 };
+
+export type Authentication =
+  | { apiKey: string }
+  | { jwt: string }
+  | { username: string; password: string };
+
+export type RequestOptions = RequestInit;
 
 export interface ClientConfig<
   E extends Api4.EntitiesConfig,
   F extends Api3.EntitiesConfig,
 > {
   baseUrl: string;
-  apiKey: string;
+  auth?: Authentication;
   entities?: E;
-  requestOptions?: RequestInit;
+  requestOptions?: RequestOptions;
   debug?: boolean;
   api3?: {
     enabled: boolean;
@@ -25,5 +39,6 @@ export interface ClientConfig<
 
 export type BaseRequestFn<RequestParams, Response> = (
   params: RequestParams,
-  requestOptions: RequestInit,
+  requestOptions: RequestOptions,
+  auth?: Authentication,
 ) => Promise<Response>;

@@ -9,14 +9,14 @@ export class RequestBuilder<
 > extends BaseRequestBuilder<Api3.RequestParams, Response> {
   private action: string;
   private params?: Api3.Params;
-  private opts: Record<string, Api3.Value> = {};
+  private options: Record<string, Api3.Value> = {};
 
   constructor(entity: string, request: Api3.RequestFn<Response>, actions: A) {
     super(entity, request);
 
     forIn(actions, (action: string, key: string) => {
       this[key] = (params?: Api3.Params) => {
-        this.action = action as any;
+        this.action = action;
         this.params = params;
 
         return this;
@@ -25,11 +25,11 @@ export class RequestBuilder<
   }
 
   get requestParams(): Api3.RequestParams {
-    return [this.entity, this.action, this.params, this.opts];
+    return [this.entity, this.action, this.params, this.options];
   }
 
-  addOption(option: string, value: Api3.Value) {
-    this.opts[option] = value;
+  option(option: string, value: Api3.Value) {
+    this.options[option] = value;
 
     return this;
   }

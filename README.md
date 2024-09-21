@@ -2,8 +2,6 @@
 
 JavaScript (and TypeScript) client for the [CiviCRM API](https://docs.civicrm.org/dev/en/latest/api/v4/usage/).
 
-Currently only tested in Node.js, browser support is work in progress.
-
 ## Installation
 
 ```sh
@@ -17,11 +15,11 @@ import { createClient } from "civicrm-api";
 
 const client = createClient({
   baseUrl: "https://example.com/civicrm",
-  apiKey: "your-api-key",
+  auth: { apiKey: "<your-api-key>" },
   entities: { contact: "Contact" },
 });
 
-const contactRequest = client.contact.get({ where: { id: 1 } }).one();
+const contactRequest = client.contact.get({ where: [["id", "=", "1"]] }).one();
 ```
 
 ### API v3
@@ -56,10 +54,24 @@ Configure a CiviCRM API client.
 
 The base URL of the CiviCRM installation.
 
-#### options.apiKey
+#### options.auth
 
-The [API key](https://docs.civicrm.org/sysadmin/en/latest/setup/api-keys/) to
-use for authentication.
+The API key, JWT, or username and password that will be used to authenticate requests. Refer to the [CiviCRM authentication](https://docs.civicrm.org/dev/en/latest/framework/authx/#authentication) documentation.
+
+```ts
+const client = createClient({
+  // ...
+
+  auth: { apiKey: "api-key" },
+  //=> X-Civi-Auth: Bearer api-key
+
+  auth: { jwt: "jwt" },
+  //=> X-Civi-Auth: Bearer jwt
+
+  auth: { username: "user", password: "pass" },
+  //=> X-Civi-Auth: Basic dXNlcjpwYXNz
+});
+```
 
 #### options.entities
 
@@ -140,14 +152,14 @@ calling `.then()` or starting a chain with `await`.
 ```ts
 // Using .then()
 client.contact
-  .get({ where: { id: 1 } })
+  .get({ where: [["id", "=", "1"]] })
   .one()
   .then((contact) => {
     //
   });
 
 // Using await
-const contact = await client.contact.get({ where: { id: 1 } }).one();
+const contact = await client.contact.get({ where: [["id", "=", "1"]] }).one();
 ```
 
 #### `get(params?: Api4.Params): Api4.RequestBuilder`
@@ -184,7 +196,7 @@ for another entity within the current API call.
 
 ```ts
 const contact = await client.contact
-  .get({ where: { id: 1 } })
+  .get({ where: [["id", "=", "1"]] })
   .chain(
     "activity",
     client.activity.get({ where: { target_contact_id: "$id" } }),
@@ -216,7 +228,7 @@ the [same options as `fetch`](https://developer.mozilla.org/en-US/docs/Web/API/f
 Headers will be merged with the default headers.
 
 ```ts
-client.contact.get().options({
+client.contact.get().requestOptions({
   headers: {
     "X-Custom-Header": "value",
   },
@@ -249,12 +261,12 @@ const contacts = await client.getList({ input: "example" });
 
 Set the action for the request, and optionally set request parameters.
 
-#### `addOption(option: string, value: Api3.Value): Api3.RequestBuilder`
+#### `option(option: string, value: Api3.Value): Api3.RequestBuilder`
 
 Set [API options](https://docs.civicrm.org/dev/en/latest/api/v3/options/).
 
 ```ts
-client.api3.contact.getList().addOption("limit", 10);
+client.api3.contact.getList().option("limit", 10);
 ```
 
 #### `options(requestOptions: RequestInit): Api3.RequestBuilder`
@@ -269,7 +281,7 @@ the [same options as `fetch`](https://developer.mozilla.org/en-US/docs/Web/API/f
 Headers will be merged with the default headers.
 
 ```ts
-client.api3.contact.getList().options({
+client.api3.contact.getList().requestOptions({
   headers: {
     "X-Custom-Header": "value",
   },
@@ -279,7 +291,7 @@ client.api3.contact.getList().options({
 
 ## Alternatives
 
-- The [civicrm](https://www.npmjs.com/package/civicrm) package from [Tech to The People](https://github.com/TechToThePeople) offers a different approach to building requests and targets browsers and web workers as well as Node.js.
+- The [civicrm](https://www.npmjs.com/package/civicrm) package from [Tech to The People](https://github.com/TechToThePeople) offers a different approach to building requests.
 
 ## Development
 

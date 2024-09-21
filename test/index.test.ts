@@ -2,11 +2,11 @@ import { DeferredPromise } from "@open-draft/deferred-promise";
 import { afterEach, beforeEach, expect, test } from "vitest";
 
 import { createClient } from "../src";
-import { server } from "./mock-server";
+import { server } from "./mock/server";
 
 const clientConfig = {
   baseUrl: "https://example.com",
-  apiKey: "mock-api-key",
+  auth: { apiKey: "mock-api-key" },
 };
 
 const client = createClient({
@@ -36,13 +36,6 @@ test("requires baseUrl", () => {
     // @ts-ignore
     createClient({ apiKey: "mock-api-key" });
   }).toThrow("baseUrl is required");
-});
-
-test("requires apiKey", () => {
-  expect(() => {
-    // @ts-ignore
-    createClient({ baseUrl: "https://example.com" });
-  }).toThrow("apiKey is required");
 });
 
 test("creates methods for specified entities", () => {
