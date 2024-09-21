@@ -1,5 +1,5 @@
 import { DeferredPromise } from "@open-draft/deferred-promise";
-import noop from "lodash.noop";
+import { noop } from "lodash-es";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
 import { createClient } from "../src";

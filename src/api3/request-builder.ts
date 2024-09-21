@@ -1,4 +1,4 @@
-import forIn from "lodash.forin";
+import { forIn } from "lodash-es";
 
 import { Api3 } from "./types";
 import { RequestBuilder as BaseRequestBuilder } from "../lib/request-builder";
