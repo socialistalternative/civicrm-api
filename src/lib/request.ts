@@ -26,16 +26,6 @@ function authenticationHeader(auth?: Authentication): string {
   throw new Error("auth must contain apiKey, jwt, or username/password");
 }
 
-function handleError(error: string) {
-  if (this.debug) {
-    console.error(error);
-    console.groupEnd();
-  }
-
-  // TODO: make this error more informative
-  throw new Error("CiviCRM request failed");
-}
-
 export function bindRequest(
   requestFn: BaseRequestFn<any, any>,
   config: ClientConfig<any, any>,
@@ -101,4 +91,48 @@ export async function request(
   }
 
   return json.values;
+}
+
+function handleError(errorResponse: string | object) {
+  const error = new CiviCRMRequestError(errorResponse);
+
+  if (this.debug) {
+    console.error(error);
+    console.groupEnd();
+  }
+
+  throw error;
+}
+
+class CiviCRMRequestError extends Error {
+  name = "CiviCRMRequestError";
+  message: string;
+  detail: any;
+
+  parseError(error: string | { error_message: string }) {
+    if (typeof error === "object") {
+      return error;
+    }
+
+    try {
+      const object = JSON.parse(error);
+
+      if (object && typeof object === "object") {
+        return object;
+      }
+    } catch (e) {}
+
+    return {
+      error_message: error || "CiviCRM request failed",
+    };
+  }
+
+  constructor(error: any) {
+    super();
+
+    const { error_message, ...detail } = this.parseError(error);
+
+    this.message = error_message;
+    this.detail = detail;
+  }
 }
