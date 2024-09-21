@@ -19,7 +19,7 @@ const client = createClient({
   entities: { contact: "Contact" },
 });
 
-const contactRequest = client.contact.get({ where: { id: 1 } }).one();
+const contactRequest = client.contact.get({ where: [["id", "=", "1"]] }).one();
 ```
 
 ### API v3
@@ -152,14 +152,14 @@ calling `.then()` or starting a chain with `await`.
 ```ts
 // Using .then()
 client.contact
-  .get({ where: { id: 1 } })
+  .get({ where: [["id", "=", "1"]] })
   .one()
   .then((contact) => {
     //
   });
 
 // Using await
-const contact = await client.contact.get({ where: { id: 1 } }).one();
+const contact = await client.contact.get({ where: [["id", "=", "1"]] }).one();
 ```
 
 #### `get(params?: Api4.Params): Api4.RequestBuilder`
@@ -196,7 +196,7 @@ for another entity within the current API call.
 
 ```ts
 const contact = await client.contact
-  .get({ where: { id: 1 } })
+  .get({ where: [["id", "=", "1"]] })
   .chain(
     "activity",
     client.activity.get({ where: { target_contact_id: "$id" } }),
