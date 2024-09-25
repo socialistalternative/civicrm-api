@@ -1,7 +1,22 @@
 {
   "name": "civicrm-api",
-  "type": "module",
   "version": "0.3.0",
+  "license": "MIT",
+  "description": "TypeScript client for the CiviCRM API, supporting both API v4 and v3.",
+  "keywords": [ "CiviCRM", "client", "TypeScript", "REST", "API v3", "API v4" ],
+  "homepage": "https://github.com/socialistalternative/civicrm-api#readme",
+  "author": "Angus Fretwell <angusfretwell@me.com> (http://angusfretwell.com)",
+  "contributors": [
+    "Ian Edington <ian.edington@gmail.com> (http://ianedington.com/)"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/socialistalternative/civicrm-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/socialistalternative/civicrm-api/issues"
+  },
+  "type": "module",
   "source": "src/index.ts",
   "main": "./dist/index.cjs",
   "module": "./dist/index.module.js",
@@ -20,7 +35,6 @@
     "test:browser": "vitest --config vitest.browser.config.js",
     "coverage": "vitest run --coverage"
   },
-  "license": "MIT",
   "devDependencies": {
     "@open-draft/deferred-promise": "^2.2.0",
     "@types/lodash-es": "^4.17.12",
