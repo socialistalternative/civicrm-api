@@ -203,6 +203,15 @@ describe("request methods", () => {
       "https://example.com/civicrm/ajax/api4/Contact/getChecksum",
     );
   });
+
+  test("makes an autocomplete request", async () => {
+    await client.contact.autocomplete();
+    const req = await request;
+
+    expect(req.url).toBe(
+      "https://example.com/civicrm/ajax/api4/Contact/autocomplete",
+    );
+  });
 });
 
 describe("debug", () => {
