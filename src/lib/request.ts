@@ -93,7 +93,7 @@ export async function request(
   return json.values;
 }
 
-function handleError(errorResponse: string | object) {
+function handleError(errorResponse: string | object): never {
   const error = new CiviCRMRequestError(errorResponse);
 
   if (this.debug) {
