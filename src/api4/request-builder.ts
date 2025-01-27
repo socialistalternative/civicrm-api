@@ -72,6 +72,13 @@ export class RequestBuilder<Response = any> extends BaseRequestBuilder<
     return this;
   }
 
+  autocomplete(params?: Api4.Params) {
+    this.action = Api4.Action.autocomplete;
+    this.params = params;
+
+    return this;
+  }
+
   one() {
     this.index = 0;
 

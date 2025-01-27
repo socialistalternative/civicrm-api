@@ -15,6 +15,7 @@ export namespace Api4 {
     save = "save",
     delete = "delete",
     getChecksum = "getChecksum",
+    autocomplete = "autocomplete",
   }
 
   export type Value =
