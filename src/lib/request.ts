@@ -123,7 +123,7 @@ class CiviCRMRequestError extends Error {
     } catch (e) {}
 
     return {
-      error_message: error || "CiviCRM request failed",
+      error_message: error,
     };
   }
 
@@ -132,7 +132,7 @@ class CiviCRMRequestError extends Error {
 
     const { error_message, ...detail } = this.parseError(error);
 
-    this.message = error_message;
+    this.message = error_message || "CiviCRM request failed";
     this.detail = detail;
   }
 }
