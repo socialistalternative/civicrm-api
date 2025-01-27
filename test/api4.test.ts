@@ -239,7 +239,12 @@ describe("debug", () => {
     } catch {}
 
     expect(consoleSpy.group).toHaveBeenCalled();
-    expect(consoleSpy.error).toHaveBeenCalledWith("Internal Server Error");
+    expect(consoleSpy.error).toHaveBeenCalledWith(
+      expect.objectContaining({
+        name: "CiviCRMRequestError",
+        message: "Internal Server Error",
+      }),
+    );
     expect(consoleSpy.groupEnd).toHaveBeenCalled();
   });
 });
