@@ -25,7 +25,8 @@ export namespace Api4 {
     | number[]
     | boolean
     | boolean[]
-    | null;
+    | null
+    | Date;
 
   type Many<T> = T | readonly T[];
 
@@ -76,6 +77,9 @@ export namespace Api4 {
         offset?: number;
         values?: Record<string, Value>;
         chain?: Record<string, RequestParams>;
+        records?: Record<string, Value>[];
+        defaults?: Record<string, Value>;
+        match?: string[];
       }
     | Record<string, Value>;
 
