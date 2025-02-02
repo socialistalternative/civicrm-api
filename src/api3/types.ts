@@ -32,7 +32,8 @@ export namespace Api3 {
     | number[]
     | boolean
     | boolean[]
-    | null;
+    | null
+    | undefined;
 
   export type Params = Record<string, Value>;
   export type Options = Record<string, Value>;

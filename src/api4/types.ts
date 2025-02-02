@@ -26,7 +26,8 @@ export namespace Api4 {
     | boolean
     | boolean[]
     | null
-    | Date;
+    | Date
+    | undefined;
 
   type Many<T> = T | readonly T[];
 
