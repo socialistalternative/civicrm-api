@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "target": "es2016",
     "allowSyntheticDefaultImports": true
   },
   "files": ["src/types.ts", "src/api3/types.ts", "src/api4/types.ts"]
