@@ -1,6 +1,6 @@
 {
   "name": "civicrm-api",
-  "version": "0.4.3",
+  "version": "0.5.0",
   "license": "MIT",
   "description": "TypeScript client for the CiviCRM API, supporting both API v4 and v3.",
   "keywords": [
