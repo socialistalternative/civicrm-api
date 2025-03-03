@@ -75,6 +75,7 @@ export class RequestBuilder<Response = any> extends BaseRequestBuilder<
   autocomplete(params?: Api4.Params) {
     this.action = Api4.Action.autocomplete;
     this.params = params;
+    this.requestOptions({ method: "GET" });
 
     return this;
   }

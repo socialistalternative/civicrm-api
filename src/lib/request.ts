@@ -54,7 +54,7 @@ export async function request(
   const start = performance.now();
 
   const res = await fetch(url, {
-    method,
+    method: method ?? "POST",
     headers: {
       "X-Civi-Auth": authenticationHeader(auth),
       "Content-Type": "application/x-www-form-urlencoded",
