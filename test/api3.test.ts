@@ -161,11 +161,10 @@ describe("debug", () => {
 
   test("logs request timing", async () => {
     await clientWithDebug.api3.contact.getList();
-    const req = await request;
-    const requestId = req.headers.get("X-Request-Id");
+    await request;
 
     expect(consoleSpy.group).toHaveBeenCalledWith(
-      `CiviCRM request ${requestId} https://example.com/civicrm/ajax/rest?entity=Contact&action=getlist&json=%7B%7D 200 in 0ms`,
+      `CiviCRM request https://example.com/civicrm/ajax/rest?entity=Contact&action=getlist&json=%7B%7D 200 in 0ms`,
     );
     expect(consoleSpy.groupEnd).toHaveBeenCalled();
   });

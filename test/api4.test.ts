@@ -233,11 +233,10 @@ describe("debug", () => {
 
   test("logs request timing", async () => {
     await clientWithDebug.contact.get();
-    const req = await request;
-    const requestId = req.headers.get("X-Request-Id");
+    await request;
 
     expect(consoleSpy.group).toHaveBeenCalledWith(
-      `CiviCRM request ${requestId} https://example.com/civicrm/ajax/api4/Contact/get 200 in 0ms`,
+      `CiviCRM request https://example.com/civicrm/ajax/api4/Contact/get 200 in 0ms`,
     );
     expect(consoleSpy.groupEnd).toHaveBeenCalled();
   });

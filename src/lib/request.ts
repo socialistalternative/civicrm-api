@@ -42,11 +42,9 @@ export async function request(
   this: ClientConfig<any, any>,
   path: string,
   params?: URLSearchParams,
-  { headers, ...requestOptions }: RequestOptions = {},
+  { headers, method, ...requestOptions }: RequestOptions = {},
   auth?: Authentication,
 ): Promise<any> {
-  const requestId = crypto.randomUUID();
-
   const url = new URL(path, this.baseUrl);
 
   if (params) {
@@ -56,12 +54,11 @@ export async function request(
   const start = performance.now();
 
   const res = await fetch(url, {
-    method: "POST",
+    method,
     headers: {
       "X-Civi-Auth": authenticationHeader(auth),
       "Content-Type": "application/x-www-form-urlencoded",
       "X-Requested-With": "XMLHttpRequest",
-      "X-Request-ID": requestId,
       ...headers,
     },
     ...requestOptions,
@@ -70,9 +67,7 @@ export async function request(
   if (this.debug) {
     const time = `${Math.round(performance.now() - start)}ms`;
 
-    console.group(
-      `CiviCRM request ${requestId} ${res.url} ${res.status} in ${time}`,
-    );
+    console.group(`CiviCRM request ${res.url} ${res.status} in ${time}`);
   }
 
   if (!res.ok) {

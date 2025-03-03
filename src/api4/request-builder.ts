@@ -31,8 +31,8 @@ export class RequestBuilder<Response = any> extends BaseRequestBuilder<
 
   get(params?: Api4.Params) {
     this.action = Api4.Action.get;
-    this.params;
     this.params = params;
+    this.requestOptions({ method: "GET" });
 
     return this;
   }

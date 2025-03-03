@@ -15,7 +15,10 @@ export class RequestBuilder<RequestParams = any, T = any>
   }
 
   requestOptions(requestOptions: RequestOptions) {
-    this._requestOptions = requestOptions;
+    this._requestOptions = {
+      ...this._requestOptions,
+      ...requestOptions,
+    };
 
     return this;
   }
