@@ -204,6 +204,15 @@ describe("request methods", () => {
     );
   });
 
+  test("makes a validate request", async () => {
+    await client.contact.validate();
+    const req = await request;
+
+    expect(req.url).toBe(
+      "https://example.com/civicrm/ajax/api4/Contact/validate",
+    );
+  });
+
   test("makes an autocomplete request", async () => {
     await client.contact.autocomplete();
     const req = await request;
