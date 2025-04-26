@@ -72,6 +72,13 @@ export class RequestBuilder<Response = any> extends BaseRequestBuilder<
     return this;
   }
 
+  validateChecksum(params?: Api4.Params) {
+    this.action = Api4.Action.validateChecksum;
+    this.params = params;
+
+    return this;
+  }
+
   validate(params?: Api4.Params) {
     this.action = Api4.Action.validate;
     this.params = params;

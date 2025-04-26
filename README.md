@@ -174,6 +174,10 @@ const contact = await client.contact.get({ where: [["id", "=", "1"]] }).one();
 
 #### `getChecksum(params?: Api4.Params): Api4.RequestBuilder`
 
+#### `validateChecksum(params?: Api4.Params): Api4.RequestBuilder`
+
+#### `validate(params?: Api4.Params): Api4.RequestBuilder`
+
 Set the action for the request to the method name, and optionally set request
 parameters.
 

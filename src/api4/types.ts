@@ -16,6 +16,7 @@ export namespace Api4 {
     delete = "delete",
     validate = "validate",
     getChecksum = "getChecksum",
+    validateChecksum = "validateChecksum",
     autocomplete = "autocomplete",
   }
 
